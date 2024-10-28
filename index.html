@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Fogueira e Madeira</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #game-container {
+            max-width: 300px;
+            margin: auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #status {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Jogo de Fogueira e Madeira</h1>
+        <div>
+            <button id="collect-wood">Coletar Madeira</button>
+            <button id="feed-fire">Alimentar Fogueira</button>
+        </div>
+        <div id="status">
+            <p>Madeira: <span id="wood-count">0</span></p>
+            <p>Fogueira: <span id="fire-status">Apagada</span></p>
+        </div>
+    </div>
+
+    <script>
+        let woodCount = 0;
+        let fireStatus = false;
+        let fireInterval;
+        
+        const woodCountDisplay = document.getElementById("wood-count");
+        const fireStatusDisplay = document.getElementById("fire-status");
+        const collectWoodButton = document.getElementById("collect-wood");
+        const feedFireButton = document.getElementById("feed-fire");
+
+        // Função para coletar madeira
+        function collectWood() {
+            collectWoodButton.disabled = true;
+            setTimeout(() => {
+                woodCount += 5;
+                woodCountDisplay.textContent = woodCount;
+                collectWoodButton.disabled = false;
+            }, 5000); // 5 segundos para coletar madeira
+        }
+
+        // Função para alimentar a fogueira
+        function feedFire() {
+            if (woodCount > 0) {
+                woodCount -= 1;
+                woodCountDisplay.textContent = woodCount;
+                fireStatus = true;
+                fireStatusDisplay.textContent = "Acesa";
+                clearInterval(fireInterval);
+                startFireTimer();
+            } else {
+                alert("Você não tem madeira suficiente para alimentar a fogueira.");
+            }
+        }
+
+        // Função para iniciar o temporizador da fogueira
+        function startFireTimer() {
+            fireInterval = setInterval(() => {
+                fireStatus = false;
+                fireStatusDisplay.textContent = "Apagada";
+                clearInterval(fireInterval);
+            }, 10000); // 10 segundos para apagar a fogueira
+        }
+
+        // Eventos dos botões
+        collectWoodButton.addEventListener("click", collectWood);
+        feedFireButton.addEventListener("click", feedFire);
+    </script>
+</body>
+</html>
